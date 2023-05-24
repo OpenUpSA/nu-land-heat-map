@@ -1,0 +1,49 @@
+{
+  "name": "nu-land-parcel-map",
+  "version": "0.0.1",
+  "author": {
+    "name": "Paul Watson",
+    "email": "paul@openup.org.za"
+  },
+  "license": "MIT",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "rm -rf dist && parcel build src/index.html",
+    "deploy": "yarn build && netlify deploy -d dist",
+    "test": "cypress run",
+    "start": "npx serve dist"
+  },
+  "devDependencies": {
+    "@parcel/packager-raw-url": "2.4.1",
+    "@parcel/transformer-sass": "2.4.1",
+    "@parcel/transformer-webmanifest": "2.4.1",
+    "buffer": "^6.0.3",
+    "cypress": "^10.7.0",
+    "events": "^3.3.0",
+    "parcel": "^2.4.1",
+    "process": "^0.11.10",
+    "stream-browserify": "^3.0.0",
+    "typescript": "^4.6.3"
+  },
+  "dependencies": {
+    "@emotion/react": "^11.10.0",
+    "@emotion/styled": "^11.10.0",
+    "@mui/material": "^5.10.1",
+    "@mui/system": "^5.10.1",
+    "@mui/x-data-grid": "^5.15.2",
+    "@mui/x-data-grid-pro": "^5.15.2",
+    "@mui/x-license-pro": "^5.15.0",
+    "@types/geojson": "^7946.0.8",
+    "@types/leaflet": "^1.7.9",
+    "@types/leaflet-fullscreen": "^1.0.6",
+    "@types/leaflet.gridlayer.googlemutant": "^0.4.6",
+    "csv-string": "^4.1.0",
+    "leaflet": "^1.8.0",
+    "leaflet-fullscreen": "^1.0.2",
+    "leaflet-google-places-autocomplete": "^0.0.9",
+    "leaflet.gridlayer.googlemutant": "^0.13.5",
+    "natural-orderby": "^2.0.3",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  }
+}

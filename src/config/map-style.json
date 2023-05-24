@@ -1,0 +1,31 @@
+// https://mapstyle.withgoogle.com/
+[
+  { "featureType": "water", "stylers": [{ "color": "#dedede" }] },
+  {
+    "featureType": "road",
+    "elementType": "labels",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "featureType": "transit",
+    "elementType": "labels",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "featureType": "poi",
+    "elementType": "labels",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "featureType": "landscape",
+    "elementType": "labels",
+    "stylers": [{ "visibility": "off" }]
+  },
+  {
+    "stylers": [
+      {
+        "saturation": -100
+      }
+    ]
+  }
+]
