@@ -17,22 +17,22 @@
       import geojson from "./data/complete.json";
       import * as mapStyles from "./config/map-style.json";
 
-      function getScaledValue(
+      const urlSearch = new URLSearchParams(window.location.search);
+
+      const getScaledValue = (
         value,
         sourceRangeMin,
         sourceRangeMax,
         targetRangeMin,
         targetRangeMax
-      ) {
+      ) => {
         var targetRange = targetRangeMax - targetRangeMin;
         var sourceRange = sourceRangeMax - sourceRangeMin;
         return (
           ((value - sourceRangeMin) * targetRange) / sourceRange +
           targetRangeMin
         );
-      }
-
-      const urlSearch = new URLSearchParams(window.location.search);
+      };
 
       // Determine the Size m2 range and scale the heatmap accordingly
       let min = 0;
@@ -51,6 +51,15 @@
       });
 
       window.initMap = () => {
+        const filtered = (urlSearch.get("filtered") || "")
+          .split(",");
+
+        if (filtered[0] !== "") {
+          geojson["features"] = geojson["features"].filter((feature) => {
+            return filtered.includes(feature["properties"]["Owner type"]);
+          });
+        } 
+
         let heatmapData = [];
         geojson["features"].forEach((feature) => {
           let lat = 0;
