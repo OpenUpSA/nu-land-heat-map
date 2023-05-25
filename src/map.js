@@ -1,23 +1,10 @@
 import geojson from "./data/parcels.json";
 import * as mapStyles from "./config/map-style.json";
+import * as heatmapGradient from "./config/heatmap-gradient.json";
+import {getScaledValue} from "./utils.js";
 
 const urlSearch = new URLSearchParams(window.location.search);
 
-const getScaledValue = (
-  value,
-  sourceRangeMin,
-  sourceRangeMax,
-  targetRangeMin,
-  targetRangeMax
-) => {
-  var targetRange = targetRangeMax - targetRangeMin;
-  var sourceRange = sourceRangeMax - sourceRangeMin;
-  return (
-    ((value - sourceRangeMin) * targetRange) / sourceRange + targetRangeMin
-  );
-};
-
-// Determine the Size m2 range and scale the heatmap accordingly
 let min = 0;
 let max = 0;
 geojson["features"].forEach((feature) => {
@@ -78,22 +65,7 @@ window.initMap = () => {
   var heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatmapData,
     radius: parseInt(urlSearch.get("radius")) || 25,
-    gradient: [
-      "rgba(0, 255, 255, 0)",
-      "rgba(0, 255, 255, 1)",
-      "rgba(0, 191, 255, 1)",
-      "rgba(0, 127, 255, 1)",
-      "rgba(0, 63, 255, 1)",
-      "rgba(0, 0, 255, 1)",
-      "rgba(0, 0, 223, 1)",
-      "rgba(0, 0, 191, 1)",
-      "rgba(0, 0, 159, 1)",
-      "rgba(0, 0, 127, 1)",
-      "rgba(63, 0, 91, 1)",
-      "rgba(127, 0, 63, 1)",
-      "rgba(191, 0, 31, 1)",
-      "rgba(255, 0, 0, 1)",
-    ],
+    gradient: heatmapGradient,
     maxIntensity: parseInt(urlSearch.get("maxintensity")) || 75,
   });
   heatmap.setMap(map);
