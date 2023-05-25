@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "parcel serve src/index.html src/demo.html",
+    "dev": "parcel serve src/index.html src/demo.html --dist-dir dev",
     "build": "rm -rf dist && parcel build src/index.html src/demo.html",
     "deploy": "yarn build && netlify deploy -d dist",
     "test": "cypress run",
