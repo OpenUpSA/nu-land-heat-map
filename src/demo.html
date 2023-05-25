@@ -5,41 +5,34 @@
     <meta name="viewport" content="width=device-width" />
     <title>NU Land Heat Map - Demo</title>
     <link rel="manifest" href="site.webmanifest" />
-    <link rel="stylesheet" href="page.scss" />
-    <link rel="stylesheet" href="map.scss" />
+    <link rel="stylesheet" href="main.scss" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
     />
-    <style>
-      html,
-      body {
-        overflow: hidden;
-      }
-
-      .is-min-height-100vh {
-        min-height: 100vh;
-      }
-
-      ul.is-list-type-none {
-        list-style: none;
-        margin: 0;
-      }
-    </style>
   </head>
-
-  <body>
+  <body class="has-background-white">
     <div class="columns is-min-height-100vh is-gapless">
       <div class="column is-half">
-        <iframe
-          src="/src/index.html"
-          name="map"
-          style="width: 100%; height: 100%; border: none"
-        ></iframe>
+        <iframe src="/src/index.html" name="map" class="map"></iframe>
       </div>
       <div class="column">
         <div class="section content">
+          <h1 class="title">NU Land Heat Map</h1>
+          <h2 class="title">Heat Map Options</h2>
+          <ul>
+            <li>
+              <a href="./?radius=100" target="map"><code>radius=100</code></a> default <code>25</code>
+            </li>
+            <li>
+              <a href="./?maxintensity=10" target="map"><code>maxintensity=10</code></a> default <code>75</code>
+            </li>
+            <li>
+              <a href="./?filtered=Multi-Goverment" target="map"><code>filtered=Multi-Goverment</code></a>
+            </li>
+          </ul>
+          <h2 class="title">Controlling The IFrame</h2>
           <p>
             To target an <code>iframe</code> give the element a
             <code>name</code> attribute e.g.
