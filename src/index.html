@@ -83,13 +83,13 @@
           center: center,
           zoom: 12,
           maxZoom: 14,
-          type: "roadmap",
           styles: mapStyles,
           streetViewControl: false,
           fullscreenControl: false,
           mapTypeControlOptions: {
             position: google.maps.ControlPosition.TOP_RIGHT,
           },
+          mapTypeId: google.maps.MapTypeId.TERRAIN
         });
 
         var heatmap = new google.maps.visualization.HeatmapLayer({
