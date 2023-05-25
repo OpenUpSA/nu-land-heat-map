@@ -87,6 +87,9 @@
           styles: mapStyles,
           streetViewControl: false,
           fullscreenControl: false,
+          mapTypeControlOptions: {
+            position: google.maps.ControlPosition.TOP_RIGHT,
+          },
         });
 
         var heatmap = new google.maps.visualization.HeatmapLayer({
