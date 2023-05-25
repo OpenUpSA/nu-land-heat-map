@@ -1,15 +1,23 @@
 import geojson from "./data/parcels.json";
 import * as mapStyles from "./config/map-style.json";
 import * as heatmapGradient from "./config/heatmap-gradient.json";
-import {getScaledValue} from "./utils.js";
+import { getScaledValue } from "./utils.js";
+import { Loader } from "@googlemaps/js-api-loader";
 
 const urlSearch = new URLSearchParams(window.location.search);
+const filtered = (urlSearch.get("filtered") || "").split(",");
+const loader = new Loader({
+  apiKey: "AIzaSyDNhC5KPQu7govGn9bXQOF1PE3mjKTrctg",
+  version: "weekly",
+  libraries: ["visualization"],
+});
 
+let map;
 let min = 0;
 let max = 0;
+
 geojson["features"].forEach((feature) => {
-  const area = parseInt(feature["properties"]["Size m2"]);
-  feature["properties"]["Size m2"] = area;
+  const area = feature["properties"]["Size m2"];
   if (area > max) {
     max = area;
   }
@@ -18,8 +26,8 @@ geojson["features"].forEach((feature) => {
   }
 });
 
-window.initMap = () => {
-  const filtered = (urlSearch.get("filtered") || "").split(",");
+loader.load().then(async () => {
+  const { Map } = await google.maps.importLibrary("maps");
 
   if (filtered[0] !== "") {
     geojson["features"] = geojson["features"].filter((feature) => {
@@ -33,24 +41,17 @@ window.initMap = () => {
       feature["geometry"]["coordinates"][1],
       feature["geometry"]["coordinates"][0]
     );
-    const scaledWeight = getScaledValue(
-      feature["properties"]["Size m2"],
-      min,
-      max,
-      0,
-      100
-    );
     heatmapData.push({
       location: latlng,
-      weight: urlSearch.get("byarea") ? scaledWeight : 1,
+      weight: urlSearch.get("byarea")
+        ? getScaledValue(feature["properties"]["Size m2"], min, max, 0, 100)
+        : 1,
       maxIntensity: 1,
     });
   });
 
-  var center = new google.maps.LatLng(-34, 18.5241);
-
-  window.map = new google.maps.Map(document.getElementById("map"), {
-    center: center,
+  map = new Map(document.getElementById("map"), {
+    center: new google.maps.LatLng(-34, 18.5241),
     zoom: 12,
     maxZoom: 14,
     styles: mapStyles,
@@ -69,4 +70,4 @@ window.initMap = () => {
     maxIntensity: parseInt(urlSearch.get("maxintensity")) || 75,
   });
   heatmap.setMap(map);
-};
+});

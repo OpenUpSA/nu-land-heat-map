@@ -7,7 +7,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "dev": "parcel src/index.html src/demo.html",
+    "dev": "parcel serve src/index.html src/demo.html",
     "build": "rm -rf dist && parcel build src/index.html src/demo.html",
     "deploy": "yarn build && netlify deploy -d dist",
     "test": "cypress run",
@@ -28,6 +28,7 @@
   "dependencies": {
     "@emotion/react": "^11.10.0",
     "@emotion/styled": "^11.10.0",
+    "@googlemaps/js-api-loader": "^1.15.2",
     "@mui/material": "^5.10.1",
     "@mui/system": "^5.10.1",
     "@mui/x-data-grid": "^5.15.2",

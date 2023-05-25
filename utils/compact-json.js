@@ -18,9 +18,9 @@ geojson["features"].forEach((feature) => {
   }
   feature["geometry"]["type"] = "Point";
   feature["geometry"]["coordinates"] = [lng, lat];
-  feature["geometry"]["Size m2"] = feature["properties"]["Size m2"].replace(/,/g, "");
   feature["properties"] = {
     "Owner type": feature["properties"]["Owner type"],
+    "Size m2": parseInt(feature["properties"]["Size m2"].replace(/,/g, "")),
   };
   console.log("Compacted feature", feature);
 });
