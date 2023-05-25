@@ -14,7 +14,7 @@
     />
 
     <script type="module">
-      import geojson from "./data/complete.json";
+      import geojson from "./data/parcels.json";
       import * as mapStyles from "./config/map-style.json";
 
       const urlSearch = new URLSearchParams(window.location.search);
@@ -38,9 +38,7 @@
       let min = 0;
       let max = 0;
       geojson["features"].forEach((feature) => {
-        const area = parseInt(
-          feature["properties"]["Size m2"].replace(/,/g, "")
-        );
+        const area = parseInt(feature["properties"]["Size m2"]);
         feature["properties"]["Size m2"] = area;
         if (area > max) {
           max = area;
@@ -51,27 +49,20 @@
       });
 
       window.initMap = () => {
-        const filtered = (urlSearch.get("filtered") || "")
-          .split(",");
+        const filtered = (urlSearch.get("filtered") || "").split(",");
 
         if (filtered[0] !== "") {
           geojson["features"] = geojson["features"].filter((feature) => {
             return filtered.includes(feature["properties"]["Owner type"]);
           });
-        } 
+        }
 
         let heatmapData = [];
         geojson["features"].forEach((feature) => {
-          let lat = 0;
-          let lng = 0;
-          if (feature["geometry"]["type"] === "LineString") {
-            lat = feature["geometry"]["coordinates"][0][1];
-            lng = feature["geometry"]["coordinates"][0][0];
-          } else if (feature["geometry"]["type"] === "MultiLineString") {
-            lat = feature["geometry"]["coordinates"][0][0][1];
-            lng = feature["geometry"]["coordinates"][0][0][0];
-          }
-          let latlng = new google.maps.LatLng(lat, lng);
+          let latlng = new google.maps.LatLng(
+            feature["geometry"]["coordinates"][1],
+            feature["geometry"]["coordinates"][0]
+          );
           const scaledWeight = getScaledValue(
             feature["properties"]["Size m2"],
             min,

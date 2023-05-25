@@ -21,6 +21,11 @@
       .is-min-height-100vh {
         min-height: 100vh;
       }
+
+      ul.is-list-type-none {
+        list-style: none;
+        margin: 0;
+      }
     </style>
   </head>
 
@@ -37,18 +42,22 @@
         <div class="section content">
           <p>
             To target an <code>iframe</code> give the element a
-            <code>name</code> e.g.
+            <code>name</code> attribute e.g.
           </p>
-<pre>
+          <pre>
 &lt;iframe
   ...
   name="map"
   ...
 &gt;&lt/iframe&gt;
-</pre>
+</pre
+          >
+          <p></p>
           <p>
-            <p>Now you can target that <code>iframe</code> using <code>a</code> with a <code>target</code> attribute e.g.</p>
-<pre>
+            Now you can target that <code>iframe</code> using
+            <code>a</code> with a <code>target</code> attribute e.g.
+          </p>
+          <pre>
 &lt;a 
   href="./"
   target="map"&gt;
@@ -59,18 +68,35 @@
   target="map"&gt;
   City of Cape Town&lt;/a
 &gt;
-</pre>
-            <a href="./" target="map" class="button">All Owner Types</a>
-            <a
-              href="./?filtered=City%20of%20Cape%20Town"
-              target="map"
-              class="button"
-              >City of Cape Town</a
-            >
-            <a href="./?filtered=Multi-Goverment" target="map" class="button"
-              >Multi-Goverment</a
-            >
-          </p>
+</pre
+          >
+          <p>e.g.</p>
+          <ul class="is-list-type-none">
+            <li>
+              <a href="./" target="map" class="button">All Owner Types</a>
+            </li>
+            <li>
+              <a
+                href="./?filtered=City%20of%20Cape%20Town"
+                target="map"
+                class="button"
+                >City of Cape Town</a
+              >
+            </li>
+            <li>
+              <a href="./?filtered=Multi-Goverment" target="map" class="button"
+                >Multi-Goverment</a
+              >
+            </li>
+            <li>
+              <a
+                href="./?filtered=Multi-Goverment,National%20Government"
+                target="map"
+                class="button"
+                >Multi-Goverment and National Government</a
+              >
+            </li>
+          </ul>
         </div>
       </div>
     </div>
