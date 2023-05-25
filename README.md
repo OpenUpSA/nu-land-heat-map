@@ -23,3 +23,11 @@ You can also tweak the `maxintensity` and `radius` properties via the URL.
 ## Development, Build, Deployment
 
 See [package.json](./package.json)
+
+## Utils
+
+To reduce the multi-megabyte original complete.json run:
+
+```
+node utils/compact-json.js
+```
