@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>NU Land Heat Map - Demo</title>
+    <link rel="manifest" href="site.webmanifest" />
+    <link rel="stylesheet" href="page.scss" />
+    <link rel="stylesheet" href="map.scss" />
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
+    <style>
+      html,
+      body {
+        overflow: hidden;
+      }
+
+      .is-min-height-100vh {
+        min-height: 100vh;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="columns is-min-height-100vh is-gapless">
+      <div class="column is-half">
+        <iframe
+          src="/src/index.html"
+          name="map"
+          style="width: 100%; height: 100%; border: none"
+        ></iframe>
+      </div>
+      <div class="column">
+        <div class="section content">
+          <p>
+            To target an <code>iframe</code> give the element a
+            <code>name</code> e.g.
+          </p>
+<pre>
+&lt;iframe
+  ...
+  name="map"
+  ...
+&gt;&lt/iframe&gt;
+</pre>
+          <p>
+            <p>Now you can target that <code>iframe</code> using <code>a</code> with a <code>target</code> attribute e.g.</p>
+<pre>
+&lt;a 
+  href="./"
+  target="map"&gt;
+  All Owner Types
+&lt;/a&gt;
+&lt;a
+  href="./?filtered=City%20of%20Cape%20Town"
+  target="map"&gt;
+  City of Cape Town&lt;/a
+&gt;
+</pre>
+            <a href="./" target="map" class="button">All Owner Types</a>
+            <a
+              href="./?filtered=City%20of%20Cape%20Town"
+              target="map"
+              class="button"
+              >City of Cape Town</a
+            >
+            <a href="./?filtered=Multi-Goverment" target="map" class="button"
+              >Multi-Goverment</a
+            >
+          </p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
