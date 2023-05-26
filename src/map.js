@@ -1,7 +1,7 @@
 import geojson from "./data/parcels.json";
 import * as heatmapGradient from "./config/heatmap-gradient.json";
 import * as mapStyles from "./config/map-style.json";
-import { buildHeatMapData, filterByProperty } from "./utils.js";
+import { isMobile, buildHeatMapData, filterByProperty } from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
 
 const urlSearch = new URLSearchParams(window.location.search);
@@ -17,7 +17,8 @@ const initMap = async () => {
 
   let googleMap = new Map(document.getElementById("map"), {
     center: new google.maps.LatLng(-34, 18.5241),
-    zoom: 12,
+    zoom: isMobile() ? 10 : 12,
+    controlSize: isMobile() ? 30 : 40,
     maxZoom: 14,
     styles: mapStyles,
     streetViewControl: false,

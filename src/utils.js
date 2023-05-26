@@ -62,3 +62,7 @@ export const buildHeatMapData = (geojson, byArea) => {
   });
   return heatmapData;
 };
+
+export const isMobile = () => {
+  return window.innerWidth < 768;
+}
