@@ -1,0 +1,25 @@
+import cssString from "bundle-text:./legend-control.scss";
+let style = document.createElement("style");
+style.textContent = cssString;
+document.head.appendChild(style);
+
+export const legendControl = (available, selected) => {
+  let html = `<div class="inner"><ul class="toggleable hide">`;
+  available.forEach((item) => {
+    html += `<li>
+                <label class="checkbox">
+                    <input 
+                        class="on-change-update-heatmap" 
+                        type="checkbox" 
+                        id="${item}" 
+                        name="${item}" 
+                        value="${item}" 
+                        ${selected.includes(item) ? "checked" : ""} 
+                    />
+                        ${item}
+                </label>
+            </li>`;
+  });
+  html += `</ul><h1 class="on-click-toggle-ul">Owner Types</h1></div>`;
+  return html;
+};

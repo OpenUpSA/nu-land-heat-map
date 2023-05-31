@@ -65,4 +65,18 @@ export const buildHeatMapData = (geojson, byArea) => {
 
 export const isMobile = () => {
   return window.innerWidth < 768;
-}
+};
+
+export const getAvailable = (geojson) => {
+  let available = [];
+  geojson["features"].forEach((feature) => {
+    available.push(feature["properties"]["Owner type"]);
+  });
+  return Array.from(new Set(available)).sort();
+};
+
+export const updateUrlFilltered = (selected) => {
+  const url = new URL(window.location);
+  url.searchParams.set("filtered", selected.join(","));
+  history.pushState({}, "", url);
+};

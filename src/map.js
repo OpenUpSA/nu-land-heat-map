@@ -1,11 +1,22 @@
 import geojson from "./data/parcels.json";
-import * as heatmapGradient from "./config/heatmap-gradient.json";
+import * as defaultHeatmapGradient from "./config/heatmap-gradient.json";
 import * as mapStyles from "./config/map-style.json";
-import { isMobile, buildHeatMapData, filterByProperty } from "./utils.js";
+import {
+  getAvailable,
+  isMobile,
+  buildHeatMapData,
+  filterByProperty,
+  updateUrlFilltered,
+} from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
+import { legendControl } from "./legend-control";
 
 const urlSearch = new URLSearchParams(window.location.search);
-const selected = (urlSearch.get("filtered") || "").split(",");
+const available = getAvailable(geojson);
+let selected = urlSearch.get("filtered")
+  ? (urlSearch.get("filtered") || "").split(",")
+  : available;
+let googleMap, heatmap;
 const loader = new Loader({
   apiKey: "AIzaSyDNhC5KPQu7govGn9bXQOF1PE3mjKTrctg",
   version: "weekly",
@@ -14,10 +25,12 @@ const loader = new Loader({
 
 const initMap = async () => {
   const { Map } = await google.maps.importLibrary("maps");
+  const radius = parseInt(urlSearch.get("radius")) || 25;
+  const maxIntensity = parseInt(urlSearch.get("maxintensity")) || 75;
 
-  let googleMap = new Map(document.getElementById("map"), {
+  googleMap = new Map(document.getElementById("map"), {
     center: new google.maps.LatLng(-34, 18.5241),
-    zoom: isMobile() ? 10 : 12,
+    zoom: isMobile() ? 10.5 : 12,
     controlSize: isMobile() ? 30 : 40,
     maxZoom: 14,
     styles: mapStyles,
@@ -29,17 +42,48 @@ const initMap = async () => {
     mapTypeId: google.maps.MapTypeId.TERRAIN,
   });
 
-  geojson["features"] = filterByProperty(geojson["features"], selected);
+  const legendControlDiv = document.createElement("div");
+  legendControlDiv.id = "legend-control";
+  legendControlDiv.className = "map-control";
+  legendControlDiv.index = 100;
+  legendControlDiv.innerHTML = legendControl(available, selected);
+  googleMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(
+    legendControlDiv
+  );
 
-  let heatmapData = buildHeatMapData(geojson, urlSearch.get("byarea"));
+  document.addEventListener("click", (e) => {
+    if (e.target.classList.contains("on-click-toggle-ul")) {
+      document.getElementsByClassName("toggleable")[0].classList.toggle("hide");
+    }
+  });
 
-  let heatmap = new google.maps.visualization.HeatmapLayer({
+  document.addEventListener("change", (event) => {
+    const selected = Array.from(
+      document.querySelectorAll(".on-change-update-heatmap:checked")
+    ).map((checkbox) => checkbox.value);
+    addHeatmapLayer(selected, radius, maxIntensity, defaultHeatmapGradient);
+  });
+
+  addHeatmapLayer(selected, radius, maxIntensity, defaultHeatmapGradient);
+};
+
+const addHeatmapLayer = (selected, radius, maxIntensity, heatmapGradient) => {
+  let data = {};
+  data["features"] = filterByProperty(geojson["features"], selected);
+
+  let heatmapData = buildHeatMapData(data, urlSearch.get("byarea"));
+
+  if (heatmap) {
+    heatmap.setMap(null);
+  }
+  heatmap = new google.maps.visualization.HeatmapLayer({
     data: heatmapData,
-    radius: parseInt(urlSearch.get("radius")) || 25,
+    radius: radius,
     gradient: heatmapGradient,
-    maxIntensity: parseInt(urlSearch.get("maxintensity")) || 75,
+    maxIntensity: maxIntensity,
   });
   heatmap.setMap(googleMap);
+  updateUrlFilltered(selected);
 };
 
 loader.load().then(initMap);
