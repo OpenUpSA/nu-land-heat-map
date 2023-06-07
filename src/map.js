@@ -10,6 +10,10 @@ import {
 } from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import { legendControl } from "./legend-control";
+import cssString from "bundle-text:./map.scss";
+let style = document.createElement("style");
+style.textContent = cssString;
+document.head.appendChild(style);
 
 const urlSearch = new URLSearchParams(window.location.search);
 const available = getAvailable(suburbAreasJson);
@@ -63,10 +67,90 @@ const initMap = async () => {
     const suburb = feature.getProperty("OFC_SBRB_NAME");
     const areaForSuburb = feature.getProperty("Area m2");
     infowindow.setContent(`
-      <div class="info-window">
-        <h3>${suburb}</h3>
-        <p>${areaForSuburb ? areaForSuburb.toLocaleString() : "No"} m<sup>2</sup></p>
-      </div>
+        <table>
+          <thead>
+            <tr>
+              <th>
+                Claremont
+              </th>
+              <th class="padded">
+                ${148.2}km<sup>2</sup>
+              </th>
+              <th>
+                <span class="tag">
+                  27 parcels
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="owner-type">
+                <span class="fill" style="width: 100%">City of Cape Town</span>
+              </td>
+              <td class="padded">
+                21.4km<sup>2</sup>
+              </td>
+              <td class="is-text-align-right">
+                <span class="tag">
+                  12 parcels
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="owner-type">
+                <span class="fill" style="width: 75%">Western Cape Government</span>
+              </td>
+              <td class="padded">
+                11.3km<sup>2</sup>
+              </td>
+              <td class="is-text-align-right">
+                <span class="tag">
+                  6 parcels
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="owner-type">
+                <span class="fill" style="width: 50%">National Goverrnment</span>
+              </td>
+              <td class="padded">
+                4.8km<sup>2</sup>
+              </td>
+              <td class="is-text-align-right">
+                <span class="tag">
+                  6 parcels
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="owner-type">
+                <span class="fill" style="width: 25%">SOEs</span>
+              </td>
+              <td class="padded">
+                8.2km<sup>2</sup>
+              </td>
+              <td class="is-text-align-right">
+                <span class="tag">
+                  2 parcels
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td class="owner-type">
+                <span class="fill" style="width: 5%">Multi-government</span>
+              </td>
+              <td class="padded">
+                2.1km<sup>2</sup>
+              </td>
+              <td class="is-text-align-right">
+                <span class="tag">
+                  1 parcel
+                </span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
     `);
     infowindow.setPosition(event.latLng);
     infowindow.open(googleMap);
