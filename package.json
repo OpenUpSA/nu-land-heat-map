@@ -1,6 +1,6 @@
 {
-  "name": "nu-land-heat-map",
-  "version": "0.0.2",
+  "name": "nu-land-map",
+  "version": "0.0.3",
   "source": [
     "src/index.html",
     "src/usage.html"

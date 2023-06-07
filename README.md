@@ -1,6 +1,6 @@
-# NU Land Heat Map
+# NU Land Map
 
-Google Maps heat map using Ndifuna Ukwazi land parcel data.
+Google Maps using Ndifuna Ukwazi land parcel data.
 
 ## Usage
 
@@ -26,8 +26,8 @@ See [package.json](./package.json)
 
 ## Utils
 
-To reduce the multi-megabyte original complete.json run:
+To generate the suburb areas JSON run:
 
 ```
-node utils/compact-json.js
+node utils/process-json.js
 ```

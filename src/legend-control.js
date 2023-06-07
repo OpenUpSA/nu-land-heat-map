@@ -9,7 +9,7 @@ export const legendControl = (available, selected) => {
     html += `<li>
                 <label class="checkbox">
                     <input 
-                        class="on-change-update-heatmap" 
+                        class="on-change-update-map-layer" 
                         type="checkbox" 
                         id="${item}" 
                         name="${item}" 
