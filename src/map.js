@@ -63,6 +63,10 @@ const initMap = async () => {
     googleMap.data.revertStyle();
   });
 
+  googleMap.addListener("click", function (event) {
+    infowindow.close(googleMap);
+  });
+
   googleMap.data.addListener("click", function (event) {
     const feature = event.feature;
     const suburb = feature.getProperty("OFC_SBRB_NAME");
