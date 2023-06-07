@@ -7,6 +7,7 @@ import {
   filterByProperty,
   updateUrlFilltered,
   totalSuburbAreaFromParcels,
+  pluralize,
 } from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import { legendControl } from "./legend-control";
@@ -65,93 +66,57 @@ const initMap = async () => {
   googleMap.data.addListener("click", function (event) {
     const feature = event.feature;
     const suburb = feature.getProperty("OFC_SBRB_NAME");
-    const areaForSuburb = feature.getProperty("Area m2");
-    infowindow.setContent(`
+    const parcelCount = feature.getProperty("parcels").length;
+    const totalAreaForSuburbm2 = feature.getProperty("Total Area m2");
+    const totalAreaForSuburbkm2 = (
+      totalAreaForSuburbm2 / Math.pow(1000, 2)
+    ).toPrecision(2);
+
+    const areaByOwnerType = feature.getProperty("Size m2 by Owner type");
+    const parcelsByOwnerType = feature.getProperty("Parcels by Owner type");
+    let content = `
         <table>
           <thead>
             <tr>
               <th>
-                Claremont
+                ${suburb}
               </th>
               <th class="padded">
-                ${148.2}km<sup>2</sup>
+                ${totalAreaForSuburbkm2.toString().endsWith(".0") ? Math.round(totalAreaForSuburbkm2) : totalAreaForSuburbkm2 }km<sup>2</sup>
               </th>
               <th>
                 <span class="tag">
-                  27 parcels
+                  ${pluralize(parcelCount, "parcel")}
                 </span>
               </th>
             </tr>
           </thead>
           <tbody>
+          `;
+    Object.keys(areaByOwnerType).forEach((key) => {
+      content += `
             <tr>
               <td class="owner-type">
-                <span class="fill" style="width: 100%">City of Cape Town</span>
+                <span class="fill" style="width: ${areaByOwnerType[key] / totalAreaForSuburbm2 * 100}%">${key}</span>
               </td>
               <td class="padded">
-                21.4km<sup>2</sup>
+                ${(areaByOwnerType[key] / Math.pow(1000, 2)).toPrecision(
+                  2
+                )}km<sup>2</sup>
               </td>
               <td class="is-text-align-right">
                 <span class="tag">
-                  12 parcels
+                  ${pluralize(parcelsByOwnerType[key], "parcel")}
                 </span>
               </td>
             </tr>
-            <tr>
-              <td class="owner-type">
-                <span class="fill" style="width: 75%">Western Cape Government</span>
-              </td>
-              <td class="padded">
-                11.3km<sup>2</sup>
-              </td>
-              <td class="is-text-align-right">
-                <span class="tag">
-                  6 parcels
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="owner-type">
-                <span class="fill" style="width: 50%">National Goverrnment</span>
-              </td>
-              <td class="padded">
-                4.8km<sup>2</sup>
-              </td>
-              <td class="is-text-align-right">
-                <span class="tag">
-                  6 parcels
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="owner-type">
-                <span class="fill" style="width: 25%">SOEs</span>
-              </td>
-              <td class="padded">
-                8.2km<sup>2</sup>
-              </td>
-              <td class="is-text-align-right">
-                <span class="tag">
-                  2 parcels
-                </span>
-              </td>
-            </tr>
-            <tr>
-              <td class="owner-type">
-                <span class="fill" style="width: 5%">Multi-government</span>
-              </td>
-              <td class="padded">
-                2.1km<sup>2</sup>
-              </td>
-              <td class="is-text-align-right">
-                <span class="tag">
-                  1 parcel
-                </span>
-              </td>
-            </tr>
+            `;
+    });
+    content += `
           </tbody>
-        </table>
-    `);
+        </table>`;
+    infowindow.setContent(content);
+
     infowindow.setPosition(event.latLng);
     infowindow.open(googleMap);
   });
@@ -161,9 +126,10 @@ const initMap = async () => {
   legendControlDiv.className = "map-control";
   legendControlDiv.index = 100;
   legendControlDiv.innerHTML = legendControl(available, selected);
-  googleMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(
-    legendControlDiv
-  );
+  // TODO: Fix filter
+  //googleMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(
+  //  legendControlDiv
+  //);
 
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("on-click-toggle-ul")) {
@@ -199,26 +165,16 @@ const updateMapLayer = (selected) => {
   });
 
   googleMap.data.setStyle(function (feature) {
-    let fillColor = "";
-    let opacity = 0;
-    let cursor = "default";
-    let clickable = false;
     const areaForSuburb = feature.getProperty("Area m2");
-    if (areaForSuburb) {
-      clickable = true;
-      cursor = "pointer";
-      opacity = 0.75;
-      const areaOpacity = Math.log10(areaForSuburb) / 10;
-      fillColor = "hsla(352, 94%, 26%," + areaOpacity + ")";
-    }
+    const areaOpacity = Math.log10(areaForSuburb) / 10;
     return {
-      fillColor: fillColor,
-      fillOpacity: opacity,
+      fillColor: "hsla(352, 94%, 26%," + areaOpacity + ")",
+      fillOpacity: 0.75,
       strokeWeight: 1,
       strokeColor: "white",
       strokeOpacity: 0.75,
-      clickable: clickable,
-      cursor: cursor,
+      clickable: true,
+      cursor: "pointer",
     };
   });
 
