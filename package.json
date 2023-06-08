@@ -13,7 +13,7 @@
       ]
     },
     "library": {
-      "source": "src/map.js"
+      "source": "src/map/map.js"
     }
   },
   "author": {
