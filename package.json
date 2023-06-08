@@ -1,25 +1,26 @@
 {
   "name": "nu-land-map",
   "version": "0.0.3",
-  "source": [
-    "src/index.html",
-    "src/usage.html"
-  ],
   "targets": {
     "demo": {
       "source": [
-        "src/index.html",
-        "src/usage.html"
+        "/src/index.html",
+        "/src/methodology.html",
+        "/src/what-the-map-tells-us.html",
+        "/src/what-can-be-done.html",
+        "/src/methodology.html",
+        "/src/existing-commitments-and-slow-progress.html",
+        "/src/background.html"
       ]
     },
     "library": {
-      "source": "src/map/map.js"
+      "source": "/src/map/map.js"
     }
   },
   "author": {
     "name": "Paul Watson",
     "email": "paul@openup.org.za",
-    "homepage": "https://nu-land-heat-map.openup.org.za/"
+    "homepage": "https://peopleslandmap.nu.org.za/"
   },
   "license": "MIT",
   "scripts": {

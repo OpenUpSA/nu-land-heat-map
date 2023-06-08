@@ -31,10 +31,9 @@ const loader = new Loader({
 
 const initMap = async () => {
   const { Map } = await google.maps.importLibrary("maps");
-
-  googleMap = new Map(document.getElementById("map"), {
+  googleMap = new Map(document.getElementById("nulandmap"), {
     center: new google.maps.LatLng(-34, 18.5241),
-    zoom: isMobile() ? 10.5 : 12,
+    zoom: isMobile() ? 10.5 : 11.5,
     controlSize: isMobile() ? 30 : 40,
     maxZoom: 14,
     minZoom: isMobile() ? 10 : 11,

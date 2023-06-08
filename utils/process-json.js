@@ -87,24 +87,3 @@ suburbsGeoJson["features"] = suburbsGeoJson["features"].filter((feature) => {
 console.log("Suburbs", suburbsGeoJson["features"].length);
 
 fs.writeFileSync("src/data/suburbs.json", JSON.stringify(suburbsGeoJson));
-
-/*
-
-let suburbAreas = {};
-
-parcelsGeoJson["features"].forEach((feature) => {
-  const name =
-    feature["properties"]["Suburb"] + " " + feature["properties"]["Name"];
-  if (!suburbAreas[name]) {
-    suburbAreas[name] = {
-      "Owner type": feature["properties"]["Owner type"],
-      "Size m2": parseInt(feature["properties"]["Size m2"].replace(/,/g, "")),
-      Suburb: feature["properties"]["Suburb"],
-    };
-  }
-  console.log("Suburb area", feature);
-});
-
-let data = JSON.stringify(suburbAreas);
-fs.writeFileSync("src/data/suburbareas.json", data);
-*/
