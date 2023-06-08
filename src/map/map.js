@@ -6,7 +6,6 @@ import {
   getAvailable,
   isMobile,
   filterByProperty,
-  updateUrlFilltered,
   totalSuburbAreaFromParcels,
   pluralize,
 } from "./utils.js";
@@ -209,8 +208,6 @@ const updateMapLayer = (selected) => {
       cursor: "pointer",
     };
   });
-
-  updateUrlFilltered(selected);
 };
 
 loader.load().then(initMap);

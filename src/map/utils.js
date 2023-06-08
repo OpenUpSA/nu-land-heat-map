@@ -24,12 +24,6 @@ export const getAvailable = (features) => {
   return Array.from(new Set(available)).sort();
 };
 
-export const updateUrlFilltered = (selected) => {
-  const url = new URL(window.location);
-  url.searchParams.set("filtered", selected.join(","));
-  history.pushState({}, "", url);
-};
-
 export const totalSuburbAreaFromParcels = function (parcels) {
   let suburbAreas = {};
   for (var key in parcels) {
