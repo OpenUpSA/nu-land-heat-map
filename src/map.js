@@ -81,9 +81,14 @@ const initMap = async () => {
     const suburb = feature.getProperty("OFC_SBRB_NAME");
     const parcelCount = feature.getProperty("parcels").length;
     const totalAreaForSuburbm2 = feature.getProperty("Total Area m2");
-    const totalAreaForSuburbkm2 = (
-      totalAreaForSuburbm2 / Math.pow(1000, 2)
-    ).toPrecision(2);
+    const totalAreaForSuburbkm2 = totalAreaForSuburbm2 / Math.pow(1000, 2);
+
+    let unit = "km";
+    let totalAreaForSuburb = totalAreaForSuburbkm2.toPrecision(2);
+    if (totalAreaForSuburbkm2 < 1) {
+      unit = "m";
+      totalAreaForSuburb = totalAreaForSuburbm2.toLocaleString();
+    }
 
     const areaByOwnerType = feature.getProperty("Size m2 by Owner type");
     const parcelsByOwnerType = feature.getProperty("Parcels by Owner type");
@@ -96,10 +101,10 @@ const initMap = async () => {
               </th>
               <th class="padded">
                 ${
-                  totalAreaForSuburbkm2.toString().endsWith(".0")
-                    ? Math.round(totalAreaForSuburbkm2)
-                    : totalAreaForSuburbkm2
-                }km<sup>2</sup>
+                  totalAreaForSuburb.toString().endsWith(".0")
+                    ? Math.round(totalAreaForSuburb)
+                    : totalAreaForSuburb
+                }${unit}<sup>2</sup>
               </th>
               <th>
                 <span class="tag">
@@ -111,6 +116,15 @@ const initMap = async () => {
           <tbody>
           `;
     Object.keys(areaByOwnerType).forEach((key) => {
+      unit = "km";
+      let totalAreaForSuburbByOwnerType = (
+        areaByOwnerType[key] / Math.pow(1000, 2)
+      ).toPrecision(2);
+      if (totalAreaForSuburbByOwnerType < 1) {
+        unit = "m";
+        totalAreaForSuburbByOwnerType = areaByOwnerType[key].toLocaleString();
+      }
+
       content += `
             <tr>
               <td>
@@ -121,9 +135,7 @@ const initMap = async () => {
                 </div>
               </td>
               <td class="padded">
-                ${(areaByOwnerType[key] / Math.pow(1000, 2)).toPrecision(
-                  2
-                )}km<sup>2</sup>
+                ${totalAreaForSuburbByOwnerType}${unit}<sup>2</sup>
               </td>
               <td class="is-text-align-right">
                 <span class="tag">
