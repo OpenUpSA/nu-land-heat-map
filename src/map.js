@@ -113,10 +113,12 @@ const initMap = async () => {
     Object.keys(areaByOwnerType).forEach((key) => {
       content += `
             <tr>
-              <td class="owner-type">
-                <span class="fill" style="width: ${
-                  (areaByOwnerType[key] / totalAreaForSuburbm2) * 100
-                }%">${ownerTypes[key]}</span>
+              <td>
+                <div class="owner-type">
+                  <span class="fill" style="width: ${
+                    (areaByOwnerType[key] / totalAreaForSuburbm2) * 100
+                  }%">${ownerTypes[key]}</span>
+                </div>
               </td>
               <td class="padded">
                 ${(areaByOwnerType[key] / Math.pow(1000, 2)).toPrecision(

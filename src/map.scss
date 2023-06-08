@@ -7,7 +7,7 @@ $small: 550px;
     border-radius: 2px;
     box-shadow: 0 1px 6px rgba(178, 178, 178, 0.6);
     text-align: left;
-    padding: 0.5em 1em!important;
+    padding: 0.5em 1em !important;
     font-size: 1.3em;
 
     .gm-ui-hover-effect {
@@ -15,7 +15,7 @@ $small: 550px;
     }
 
     .gm-style-iw-d {
-      padding: 0!important;
+      padding: 0 !important;
       overflow: hidden !important;
     }
 
@@ -64,8 +64,12 @@ $small: 550px;
         tr {
           th {
             border-bottom: solid 1px #eee;
+            padding: 0;
             padding-bottom: 0.75em;
-            margin-bottom: 0.5em;
+
+            &:first-child {
+              vertical-align: bottom;
+            }
 
             @media screen and (max-width: $small) {
               padding-bottom: 0.5em;
@@ -74,6 +78,20 @@ $small: 550px;
             .tag {
               font-weight: normal;
             }
+          }
+        }
+      }
+
+      tbody {
+        tr:first-child {
+          td {
+            padding-top: 0.5em;
+          }
+        }
+
+        tr {
+          td {
+            vertical-align: sub;
           }
         }
       }
