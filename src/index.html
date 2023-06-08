@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="is-overflow-hidden">
+<html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
@@ -7,9 +7,21 @@
     <link rel="manifest" href="site.webmanifest" />
     <link rel="stylesheet" href="main.scss" />
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
+    />
   </head>
-  <body>
-    <div id="map" class="map">Loading map...</div>
-    <script async type="module" src="map.js"></script>
+  <body class="has-background-white">
+    <div class="columns is-min-height-100vh is-gapless">
+      <div class="column is-half">
+        <iframe src="/src/map.html" name="map" class="map"></iframe>
+      </div>
+      <div class="column">
+        <div class="section content">
+          <h1 class="title">NU Land Map</h1>
+          <p>This will be replace with the narrative soon.</p>
+      </div>
+    </div>
   </body>
 </html>
