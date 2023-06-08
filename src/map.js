@@ -1,6 +1,7 @@
 import suburbAreasJson from "./data/suburbareas.json";
 import suburbsGeoJson from "./data/suburbs.json";
 import * as mapStyles from "./config/map-style.json";
+import * as ownerTypes from "./config/owner-types.json";
 import {
   getAvailable,
   isMobile,
@@ -49,6 +50,14 @@ const initMap = async () => {
   googleMap.data.addGeoJson(suburbsGeoJson);
   let infowindow = new google.maps.InfoWindow({});
 
+  google.maps.event.addListener(infowindow, "domready", function () {
+    document
+      .getElementsByClassName("gm-style-iw")[0]
+      .addEventListener("click", function () {
+        infowindow.close(googleMap);
+      });
+  });
+
   googleMap.data.addListener("mouseover", function (event) {
     googleMap.data.revertStyle();
     googleMap.data.overrideStyle(event.feature, {
@@ -86,7 +95,11 @@ const initMap = async () => {
                 ${suburb}
               </th>
               <th class="padded">
-                ${totalAreaForSuburbkm2.toString().endsWith(".0") ? Math.round(totalAreaForSuburbkm2) : totalAreaForSuburbkm2 }km<sup>2</sup>
+                ${
+                  totalAreaForSuburbkm2.toString().endsWith(".0")
+                    ? Math.round(totalAreaForSuburbkm2)
+                    : totalAreaForSuburbkm2
+                }km<sup>2</sup>
               </th>
               <th>
                 <span class="tag">
@@ -101,7 +114,9 @@ const initMap = async () => {
       content += `
             <tr>
               <td class="owner-type">
-                <span class="fill" style="width: ${areaByOwnerType[key] / totalAreaForSuburbm2 * 100}%">${key}</span>
+                <span class="fill" style="width: ${
+                  (areaByOwnerType[key] / totalAreaForSuburbm2) * 100
+                }%">${ownerTypes[key]}</span>
               </td>
               <td class="padded">
                 ${(areaByOwnerType[key] / Math.pow(1000, 2)).toPrecision(
