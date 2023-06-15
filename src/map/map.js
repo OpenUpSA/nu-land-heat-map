@@ -157,10 +157,9 @@ const initMap = async () => {
   legendControlDiv.className = "map-control";
   legendControlDiv.index = 100;
   legendControlDiv.innerHTML = legendControl(available, selected);
-  // TODO: Fix filter
-  //googleMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(
-  //  legendControlDiv
-  //);
+  googleMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(
+    legendControlDiv
+  );
 
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("on-click-toggle-ul")) {
