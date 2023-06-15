@@ -1,5 +1,18 @@
 $small: 550px;
 
+.is-font-weight-400 {
+  font-weight: bold;
+}
+
+.is-display-none {
+  display: none;
+}
+
+.is-max-height-0 {
+  max-height: 0 !important;
+  overflow: hidden;
+}
+
 .gm-style {
   .gm-style-iw-c {
     box-sizing: border-box;
@@ -9,6 +22,23 @@ $small: 550px;
     text-align: left;
     padding: 0.5em 1em !important;
     font-size: 1.3em;
+    max-height: 3em !important;
+    transition: max-height 0.5s ease-in-out;
+
+    &:hover {
+      //background-color: #eee;
+      cursor: zoom-in;
+    }
+
+    &.expanded {
+      max-height: 20em !important;
+      //background-color: #fff!important;
+      cursor: zoom-out;
+
+      th {
+        border-bottom: solid 1px #eee;
+      }
+    }
 
     .gm-ui-hover-effect {
       display: none !important;
@@ -39,17 +69,6 @@ $small: 550px;
       text-align: right;
     }
 
-    h1 {
-      font-size: 1em;
-      border-bottom: solid 1px #eee;
-      padding-bottom: 0.75em;
-
-      .extra-info {
-        float: right;
-        font-weight: normal;
-      }
-    }
-
     table {
       border-collapse: unset;
       font-weight: 400;
@@ -64,7 +83,6 @@ $small: 550px;
       thead {
         tr {
           th {
-            border-bottom: solid 1px #eee;
             padding: 0;
             padding-bottom: 0.75em;
 

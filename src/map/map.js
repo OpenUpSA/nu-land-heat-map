@@ -47,35 +47,30 @@ const initMap = async () => {
   google.maps.event.addListener(infowindow, "domready", function () {
     document
       .getElementsByClassName("gm-style-iw")[0]
-      .addEventListener("click", function () {
-        infowindow.close(googleMap);
+      .addEventListener("click", function (event) {
+        event.target.closest("div.gm-style-iw-c").classList.toggle('expanded')
       });
   });
 
-  googleMap.data.addListener("mouseover", function (event) {
-    googleMap.data.revertStyle();
-    googleMap.data.overrideStyle(event.feature, {
-      strokeWeight: 3,
-      strokeOpacity: 1,
-      strokeColor: "hsla(352, 94%, 26%, 1)",
-      zIndex: 1000,
-    });
-  });
-
-  googleMap.data.addListener("mouseout", function (event) {
-    googleMap.data.revertStyle();
-  });
-
-  googleMap.addListener("click", function (event) {
-    infowindow.close(googleMap);
-  });
-
   googleMap.data.addListener("click", function (event) {
+    const feature = event.feature;
+    document.querySelector("div.gm-style-iw-c").classList.toggle('expanded');
+  });
+
+  googleMap.data.addListener("mouseover", function (event) {
     const feature = event.feature;
     const suburb = feature.getProperty("OFC_SBRB_NAME");
     const parcelCount = feature.getProperty("parcels").length;
     const totalAreaForSuburbm2 = feature.getProperty("Total Area m2");
     const totalAreaForSuburbkm2 = totalAreaForSuburbm2 / Math.pow(1000, 2);
+
+    googleMap.data.revertStyle();
+    googleMap.data.overrideStyle(feature, {
+      strokeWeight: 3,
+      strokeOpacity: 1,
+      strokeColor: "hsla(352, 94%, 26%, 1)",
+      zIndex: 1000,
+    });
 
     let unit = "km";
     let totalAreaForSuburb = totalAreaForSuburbkm2.toPrecision(2);
@@ -148,6 +143,14 @@ const initMap = async () => {
     infowindow.open(googleMap);
   });
 
+  googleMap.addListener("click", function (event) {
+    infowindow.close(googleMap);
+  });
+
+  googleMap.data.addListener("mouseout", function (event) {
+    googleMap.data.revertStyle();
+  });
+
   const availableOwnerTypes = getAvailable(suburbAreasJson);
   const legendControlDiv = document.createElement("div");
   legendControlDiv.id = "legend-control";
@@ -202,6 +205,7 @@ const updateMapLayer = (selected) => {
       strokeOpacity: 0.75,
       clickable: true,
       cursor: "pointer",
+      title: feature.getProperty("OFC_SBRB_NAME"),
     };
   });
 };
