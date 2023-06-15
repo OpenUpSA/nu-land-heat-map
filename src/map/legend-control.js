@@ -3,7 +3,7 @@ let style = document.createElement("style");
 style.textContent = cssString;
 document.head.appendChild(style);
 
-export const legendControl = (available, selected) => {
+export const legendControl = (available) => {
   let html = `<div class="inner"><ul class="toggleable hide">`;
   available.forEach((item) => {
     html += `<li>
@@ -14,7 +14,7 @@ export const legendControl = (available, selected) => {
                         id="${item}" 
                         name="${item}" 
                         value="${item}" 
-                        ${selected.includes(item) ? "checked" : ""} 
+                        checked="checked" 
                     />
                         ${item}
                 </label>

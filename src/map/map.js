@@ -12,15 +12,11 @@ import {
 import { Loader } from "@googlemaps/js-api-loader";
 import { legendControl } from "./legend-control";
 import cssString from "bundle-text:./map.scss";
+
 let style = document.createElement("style");
 style.textContent = cssString;
 document.head.appendChild(style);
 
-const urlSearch = new URLSearchParams(window.location.search);
-const available = getAvailable(suburbAreasJson);
-let selected = urlSearch.get("filtered")
-  ? (urlSearch.get("filtered") || "").split(",")
-  : available;
 let googleMap;
 const loader = new Loader({
   apiKey: "AIzaSyDNhC5KPQu7govGn9bXQOF1PE3mjKTrctg",
@@ -152,11 +148,12 @@ const initMap = async () => {
     infowindow.open(googleMap);
   });
 
+  const availableOwnerTypes = getAvailable(suburbAreasJson);
   const legendControlDiv = document.createElement("div");
   legendControlDiv.id = "legend-control";
   legendControlDiv.className = "map-control";
   legendControlDiv.index = 100;
-  legendControlDiv.innerHTML = legendControl(available, selected);
+  legendControlDiv.innerHTML = legendControl(availableOwnerTypes);
   googleMap.controls[google.maps.ControlPosition.LEFT_CENTER].push(
     legendControlDiv
   );
@@ -168,13 +165,13 @@ const initMap = async () => {
   });
 
   document.addEventListener("change", (event) => {
-    const selected = Array.from(
+    const selectedOwnerTypes = Array.from(
       document.querySelectorAll(".on-change-update-map-layer:checked")
     ).map((checkbox) => checkbox.value);
-    updateMapLayer(selected);
+    updateMapLayer(selectedOwnerTypes);
   });
 
-  updateMapLayer(selected);
+  updateMapLayer(availableOwnerTypes);
 };
 
 const updateMapLayer = (selected) => {
@@ -199,7 +196,7 @@ const updateMapLayer = (selected) => {
     const areaOpacity = Math.log10(areaForSuburb) / 10;
     return {
       fillColor: "hsla(352, 94%, 26%," + areaOpacity + ")",
-      fillOpacity: 0.75,
+      fillOpacity: areaForSuburb ? 0.75 : 0,
       strokeWeight: 1,
       strokeColor: "white",
       strokeOpacity: 0.75,
