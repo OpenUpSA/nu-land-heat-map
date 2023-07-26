@@ -1,18 +1,5 @@
 $small: 550px;
 
-.is-font-weight-400 {
-  font-weight: bold;
-}
-
-.is-display-none {
-  display: none;
-}
-
-.is-max-height-0 {
-  max-height: 0 !important;
-  overflow: hidden;
-}
-
 .gm-style {
   .gm-style-iw-c {
     box-sizing: border-box;
@@ -23,17 +10,19 @@ $small: 550px;
     padding: 0.5em 1em !important;
     font-size: 1.3em;
     max-height: 3em !important;
-    transition: max-height 0.5s ease-in-out;
+    //transition: max-height 0.5s ease-in-out;
 
     &:hover {
       //background-color: #eee;
-      cursor: zoom-in;
+      //cursor: zoom-in;
+      cursor: pointer;
     }
 
     &.expanded {
       max-height: 20em !important;
       //background-color: #fff!important;
-      cursor: zoom-out;
+      //cursor: zoom-out;
+      cursor: unset;
 
       th {
         border-bottom: solid 1px #eee;
@@ -41,7 +30,7 @@ $small: 550px;
     }
 
     .gm-ui-hover-effect {
-      display: none !important;
+      //display: none !important;
     }
 
     .gm-style-iw-d {
@@ -55,7 +44,7 @@ $small: 550px;
     }
 
     button {
-      display: none;
+      //display: none;
     }
 
     .tag {
@@ -83,6 +72,7 @@ $small: 550px;
       thead {
         tr {
           th {
+            //border-bottom: solid 1px #eee;
             padding: 0;
             padding-bottom: 0.75em;
 

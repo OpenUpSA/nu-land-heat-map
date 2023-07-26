@@ -7,7 +7,7 @@ import {
   isMobile,
   filterByProperty,
   totalSuburbAreaFromParcels,
-  pluralize,
+  showModalWindow,
 } from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import { legendControl } from "./legend-control";
@@ -42,109 +42,33 @@ const initMap = async () => {
   });
 
   googleMap.data.addGeoJson(suburbsGeoJson);
-  let infowindow = new google.maps.InfoWindow({});
+  let infoWindow = new google.maps.InfoWindow({});
 
-  google.maps.event.addListener(infowindow, "domready", function () {
+  google.maps.event.addListener(infoWindow, "domready", function () {
     document
       .getElementsByClassName("gm-style-iw")[0]
       .addEventListener("click", function (event) {
-        event.target.closest("div.gm-style-iw-c").classList.toggle('expanded')
+        event.target.closest("div.gm-style-iw-c").classList.toggle("expanded");
+        //infowindow.close(googleMap);
       });
   });
 
   googleMap.data.addListener("click", function (event) {
     const feature = event.feature;
-    document.querySelector("div.gm-style-iw-c").classList.toggle('expanded');
+    //document.getElementById("suburb-info-control").classList.toggle("expanded");
+    //document.querySelector("div.gm-style-iw-c").classList.toggle("expanded");
   });
 
-  googleMap.data.addListener("mouseover", function (event) {
-    const feature = event.feature;
-    const suburb = feature.getProperty("OFC_SBRB_NAME");
-    const parcelCount = feature.getProperty("parcels").length;
-    const totalAreaForSuburbm2 = feature.getProperty("Total Area m2");
-    const totalAreaForSuburbkm2 = totalAreaForSuburbm2 / Math.pow(1000, 2);
-
-    googleMap.data.revertStyle();
-    googleMap.data.overrideStyle(feature, {
-      strokeWeight: 3,
-      strokeOpacity: 1,
-      strokeColor: "hsla(352, 94%, 26%, 1)",
-      zIndex: 1000,
-    });
-
-    let unit = "km";
-    let totalAreaForSuburb = totalAreaForSuburbkm2.toPrecision(2);
-    if (totalAreaForSuburbkm2 < 1) {
-      unit = "m";
-      totalAreaForSuburb = totalAreaForSuburbm2.toLocaleString();
-    }
-
-    const areaByOwnerType = feature.getProperty("Size m2 by Owner type");
-    const parcelsByOwnerType = feature.getProperty("Parcels by Owner type");
-    let content = `
-        <table>
-          <thead>
-            <tr>
-              <th>
-                ${suburb}
-              </th>
-              <th class="padded">
-                ${
-                  totalAreaForSuburb.toString().endsWith(".0")
-                    ? Math.round(totalAreaForSuburb)
-                    : totalAreaForSuburb
-                }${unit}<sup>2</sup>
-              </th>
-              <th>
-                <span class="tag">
-                  ${pluralize(parcelCount, "parcel")}
-                </span>
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-          `;
-    Object.keys(areaByOwnerType).forEach((key) => {
-      unit = "km";
-      let totalAreaForSuburbByOwnerType = (
-        areaByOwnerType[key] / Math.pow(1000, 2)
-      ).toPrecision(2);
-      if (totalAreaForSuburbByOwnerType < 1) {
-        unit = "m";
-        totalAreaForSuburbByOwnerType = areaByOwnerType[key].toLocaleString();
-      }
-
-      content += `
-            <tr>
-              <td>
-                <div class="owner-type">
-                  <span class="fill" style="width: ${
-                    (areaByOwnerType[key] / totalAreaForSuburbm2) * 100
-                  }%">${ownerTypes[key]}</span>
-                </div>
-              </td>
-              <td class="padded">
-                ${totalAreaForSuburbByOwnerType}${unit}<sup>2</sup>
-              </td>
-              <td class="is-text-align-right">
-                <span class="tag">
-                  ${pluralize(parcelsByOwnerType[key], "parcel")}
-                </span>
-              </td>
-            </tr>
-            `;
-    });
-    content += `
-          </tbody>
-        </table>`;
-    infowindow.setContent(content);
-
-    infowindow.setPosition(event.latLng);
-    infowindow.open(googleMap);
-  });
+  googleMap.data.addListener("mouseover", (event) =>
+    showModalWindow(event, googleMap, ownerTypes, infoWindow)
+  );
+  googleMap.data.addListener("click", (event) =>
+    showModalWindow(event, googleMap, ownerTypes, infoWindow, true)
+  );
 
   googleMap.addListener("click", function (event) {
-    infowindow.close(googleMap);
+    infoWindow.close(googleMap);
+    //document.getElementById("suburb-info-control").classList.remove("expanded");
   });
 
   googleMap.data.addListener("mouseout", function (event) {
@@ -152,6 +76,7 @@ const initMap = async () => {
   });
 
   const availableOwnerTypes = getAvailable(suburbAreasJson);
+
   const legendControlDiv = document.createElement("div");
   legendControlDiv.id = "legend-control";
   legendControlDiv.className = "map-control";

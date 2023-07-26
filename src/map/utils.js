@@ -41,3 +41,99 @@ export const totalSuburbAreaFromParcels = function (parcels) {
 
 export const pluralize = (count, noun, suffix = "s") =>
   `${count} ${noun}${count !== 1 ? suffix : ""}`;
+
+export const showModalWindow = (
+  event,
+  googleMap,
+  ownerTypes,
+  infoWindow,
+  expanded = false
+) => {
+  const feature = event.feature;
+  const suburb = feature.getProperty("OFC_SBRB_NAME");
+  const parcelCount = feature.getProperty("parcels").length;
+  const totalAreaForSuburbm2 = feature.getProperty("Total Area m2");
+  const totalAreaForSuburbkm2 = totalAreaForSuburbm2 / Math.pow(1000, 2);
+
+  googleMap.data.revertStyle();
+  googleMap.data.overrideStyle(feature, {
+    strokeWeight: 3,
+    strokeOpacity: 1,
+    strokeColor: "hsla(352, 94%, 26%, 1)",
+    zIndex: 1000,
+  });
+
+  let unit = "km";
+  let totalAreaForSuburb = totalAreaForSuburbkm2.toPrecision(2);
+  if (totalAreaForSuburbkm2 < 1) {
+    unit = "m";
+    totalAreaForSuburb = totalAreaForSuburbm2.toLocaleString();
+  }
+
+  const areaByOwnerType = feature.getProperty("Size m2 by Owner type");
+  const parcelsByOwnerType = feature.getProperty("Parcels by Owner type");
+  let content = `
+        <table>
+          <thead>
+            <tr>
+              <th>
+                ${suburb}
+              </th>
+              <th class="padded">
+                ${
+                  totalAreaForSuburb.toString().endsWith(".0")
+                    ? Math.round(totalAreaForSuburb)
+                    : totalAreaForSuburb
+                }${unit}<sup>2</sup>
+              </th>
+              <th class="is-text-align-right">
+                <span class="tag">
+                  ${pluralize(parcelCount, "parcel")}
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+          `;
+  Object.keys(areaByOwnerType).forEach((key) => {
+    unit = "km";
+    let totalAreaForSuburbByOwnerType = (
+      areaByOwnerType[key] / Math.pow(1000, 2)
+    ).toPrecision(2);
+    if (totalAreaForSuburbByOwnerType < 1) {
+      unit = "m";
+      totalAreaForSuburbByOwnerType = areaByOwnerType[key].toLocaleString();
+    }
+
+    content += `
+            <tr>
+              <td>
+                <div class="owner-type">
+                  <span class="fill" style="width: ${
+                    (areaByOwnerType[key] / totalAreaForSuburbm2) * 100
+                  }%">${ownerTypes[key]}</span>
+                </div>
+              </td>
+              <td class="padded">
+                ${totalAreaForSuburbByOwnerType}${unit}<sup>2</sup>
+              </td>
+              <td class="is-text-align-right">
+                <span class="tag">
+                  ${pluralize(parcelsByOwnerType[key], "parcel")}
+                </span>
+              </td>
+            </tr>
+            `;
+  });
+  content += `
+          </tbody>
+        </table>`;
+  infoWindow.setContent(content);
+  infoWindow.open(googleMap);
+
+  if (expanded) {
+    document.querySelector("div.gm-style-iw-c").classList.add("expanded");
+  } else {
+    infoWindow.setPosition(event.latLng);
+  }
+};
