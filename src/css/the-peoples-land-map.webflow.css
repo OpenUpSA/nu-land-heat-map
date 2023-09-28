@@ -1809,6 +1809,9 @@ figcaption {
 }
 
 @media screen and (max-width: 479px) {
+  #panel-control {
+    display: none!important;
+  }
   .story {
     padding-left: 5vw;
     padding-right: 5vw;
@@ -1891,7 +1894,8 @@ a {
   vertical-align: super;
 }
 
-.accordion-expand, .committment-expand {
+.accordion-expand,
+.committment-expand {
   max-height: 0;
   transition: max-height 0.2s ease-in-out;
 }
@@ -1900,5 +1904,15 @@ a {
 }
 
 .transform-rotate {
-  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(180deg) skew(0deg, 0deg);
+  transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg)
+    rotateY(0deg) rotateZ(180deg) skew(0deg, 0deg);
+}
+
+.panel-toggled .map {
+  max-width: 100%;
+}
+
+.panel-toggled .story {
+  padding: 0;
+  max-width: 0;
 }

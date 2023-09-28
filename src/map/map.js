@@ -11,6 +11,7 @@ import {
 } from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import { legendControl } from "./legend-control";
+import { panelControl } from "./panel-control";
 import cssString from "bundle-text:./map.scss";
 
 let style = document.createElement("style");
@@ -82,9 +83,22 @@ const initMap = async () => {
     legendControlDiv
   );
 
+  const panelControlDiv = document.createElement("div");
+  panelControlDiv.id = "panel-control";
+  panelControlDiv.className = "map-control";
+  panelControlDiv.index = 100;
+  panelControlDiv.innerHTML = panelControl();
+  googleMap.controls[google.maps.ControlPosition.RIGHT_CENTER].push(
+    panelControlDiv
+  );
+
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("on-click-toggle-ul")) {
       document.getElementsByClassName("toggleable")[0].classList.toggle("hide");
+    }
+
+    if (e.target.classList.contains("panel-control-heading")) {
+      $(".story").parent().toggleClass("panel-toggled");
     }
   });
 

@@ -4,13 +4,12 @@ $(document).ready(function () {
   });
 
   $(".accordion-toggle").on("click", function () {
-    $(this).find('.page-navigation_arrow').toggleClass("transform-rotate");
+    $(this).find(".page-navigation_arrow").toggleClass("transform-rotate");
     $(this).next(".accordion-expand").first().toggleClass("expanded");
   });
 
   $(".committment-toggle").on("click", function () {
-    $(this).find('.page-navigation_arrow').toggleClass("transform-rotate");
+    $(this).find(".page-navigation_arrow").toggleClass("transform-rotate");
     $(this).next(".committment-expand").first().toggleClass("expanded");
   });
-
 });
