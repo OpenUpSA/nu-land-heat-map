@@ -49,14 +49,11 @@ const initMap = async () => {
       .getElementsByClassName("gm-style-iw")[0]
       .addEventListener("click", function (event) {
         event.target.closest("div.gm-style-iw-c").classList.toggle("expanded");
-        //infowindow.close(googleMap);
       });
   });
 
   googleMap.data.addListener("click", function (event) {
     const feature = event.feature;
-    //document.getElementById("suburb-info-control").classList.toggle("expanded");
-    //document.querySelector("div.gm-style-iw-c").classList.toggle("expanded");
   });
 
   googleMap.data.addListener("mouseover", (event) =>
@@ -68,7 +65,6 @@ const initMap = async () => {
 
   googleMap.addListener("click", function (event) {
     infoWindow.close(googleMap);
-    //document.getElementById("suburb-info-control").classList.remove("expanded");
   });
 
   googleMap.data.addListener("mouseout", function (event) {
