@@ -11,6 +11,7 @@ import {
 } from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import { legendControl } from "./legend-control";
+import { panelControl } from "./panel-control";
 import cssString from "bundle-text:./map.scss";
 
 let style = document.createElement("style");
@@ -49,14 +50,11 @@ const initMap = async () => {
       .getElementsByClassName("gm-style-iw")[0]
       .addEventListener("click", function (event) {
         event.target.closest("div.gm-style-iw-c").classList.toggle("expanded");
-        //infowindow.close(googleMap);
       });
   });
 
   googleMap.data.addListener("click", function (event) {
     const feature = event.feature;
-    //document.getElementById("suburb-info-control").classList.toggle("expanded");
-    //document.querySelector("div.gm-style-iw-c").classList.toggle("expanded");
   });
 
   googleMap.data.addListener("mouseover", (event) =>
@@ -68,7 +66,6 @@ const initMap = async () => {
 
   googleMap.addListener("click", function (event) {
     infoWindow.close(googleMap);
-    //document.getElementById("suburb-info-control").classList.remove("expanded");
   });
 
   googleMap.data.addListener("mouseout", function (event) {
@@ -86,9 +83,22 @@ const initMap = async () => {
     legendControlDiv
   );
 
+  const panelControlDiv = document.createElement("div");
+  panelControlDiv.id = "panel-control";
+  panelControlDiv.className = "map-control";
+  panelControlDiv.index = 100;
+  panelControlDiv.innerHTML = panelControl();
+  googleMap.controls[google.maps.ControlPosition.RIGHT_CENTER].push(
+    panelControlDiv
+  );
+
   document.addEventListener("click", (e) => {
     if (e.target.classList.contains("on-click-toggle-ul")) {
       document.getElementsByClassName("toggleable")[0].classList.toggle("hide");
+    }
+
+    if (e.target.classList.contains("panel-control-heading")) {
+      $(".story").parent().toggleClass("panel-toggled");
     }
   });
 
