@@ -1701,7 +1701,7 @@ figcaption {
   .map {
     z-index: 1;
     width: 100%;
-    min-height: 70vh;
+    min-height: 93dvh;
     position: relative;
     overflow: visible;
   }
@@ -1761,7 +1761,7 @@ figcaption {
   }
 
   .main-content {
-    padding-top: 1em;
+    padding-top: 0em;
   }
 
   .page-header {

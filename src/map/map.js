@@ -8,6 +8,8 @@ import {
   filterByProperty,
   totalSuburbAreaFromParcels,
   showModalWindow,
+  closeModalWindow,
+  touchDevice,
 } from "./utils.js";
 import { Loader } from "@googlemaps/js-api-loader";
 import { legendControl } from "./legend-control";
@@ -44,6 +46,8 @@ const initMap = async () => {
 
   googleMap.data.addGeoJson(suburbsGeoJson);
   let infoWindow = new google.maps.InfoWindow({});
+  infoWindow.setContent("");
+  infoWindow.open(googleMap);
 
   google.maps.event.addListener(infoWindow, "domready", function () {
     document
@@ -53,24 +57,37 @@ const initMap = async () => {
       });
   });
 
-  googleMap.data.addListener("click", function (event) {
-    const feature = event.feature;
-  });
-
-  googleMap.data.addListener("mouseover", (event) =>
-    showModalWindow(event, googleMap, ownerTypes, infoWindow)
-  );
-  googleMap.data.addListener("click", (event) =>
-    showModalWindow(event, googleMap, ownerTypes, infoWindow, true)
-  );
-
-  googleMap.addListener("click", function (event) {
-    infoWindow.close(googleMap);
-  });
-
-  googleMap.data.addListener("mouseout", function (event) {
-    googleMap.data.revertStyle();
-  });
+  if (touchDevice()) {
+    let modalWindowOpen = false;
+    googleMap.data.addListener("click", (event) => {
+      if (modalWindowOpen) {
+        modalWindowOpen = false;
+        closeModalWindow(infoWindow, googleMap);
+      } else {
+        modalWindowOpen = true;
+        showModalWindow(event, googleMap, ownerTypes, infoWindow, true);
+      }
+    });
+    googleMap.addListener("click", () => {
+      if (modalWindowOpen) {
+        modalWindowOpen = false;
+        closeModalWindow(infoWindow, googleMap);
+      }
+    });
+  } else {
+    googleMap.data.addListener("mouseover", (event) =>
+      showModalWindow(event, googleMap, ownerTypes, infoWindow)
+    );
+    googleMap.data.addListener("click", (event) =>
+      showModalWindow(event, googleMap, ownerTypes, infoWindow, true)
+    );
+    googleMap.data.addListener("mouseout", () => {
+      googleMap.data.revertStyle();
+    });
+    googleMap.addListener("click", () => {
+      closeModalWindow(infoWindow, googleMap);
+    });
+  }
 
   const availableOwnerTypes = getAvailable(suburbAreasJson);
 

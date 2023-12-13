@@ -1,3 +1,6 @@
+export const touchDevice = () => {
+  return "ontouchstart" in document.documentElement;
+};
 export const filterByProperty = (features, selected) => {
   let keep = {};
 
@@ -130,10 +133,14 @@ export const showModalWindow = (
         </table>`;
   infoWindow.setContent(content);
   infoWindow.open(googleMap);
+  infoWindow.setPosition(event.latLng);
 
   if (expanded) {
     document.querySelector("div.gm-style-iw-c").classList.add("expanded");
-  } else {
-    infoWindow.setPosition(event.latLng);
   }
+};
+
+export const closeModalWindow = (infoWindow, googleMap) => {
+  googleMap.data.revertStyle();
+  infoWindow.close(googleMap);
 };
