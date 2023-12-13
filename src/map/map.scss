@@ -10,18 +10,13 @@ $small: 550px;
     padding: 0.5em 1em !important;
     font-size: 1.3em;
     max-height: 3em !important;
-    //transition: max-height 0.5s ease-in-out;
 
     &:hover {
-      //background-color: #eee;
-      //cursor: zoom-in;
       cursor: pointer;
     }
 
     &.expanded {
       max-height: 20em !important;
-      //background-color: #fff!important;
-      //cursor: zoom-out;
       cursor: unset;
 
       th {
@@ -44,10 +39,6 @@ $small: 550px;
     @media screen and (max-width: $small) {
       max-width: 310px !important;
       font-size: 1em;
-    }
-
-    button {
-      //display: none;
     }
 
     .tag {
@@ -75,7 +66,6 @@ $small: 550px;
       thead {
         tr {
           th {
-            //border-bottom: solid 1px #eee;
             padding: 0;
             padding-bottom: 0.75em;
 
