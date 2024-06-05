@@ -1900,7 +1900,7 @@ a {
   transition: max-height 0.2s ease-in-out;
 }
 .expanded {
-  max-height: 1000px;
+  max-height: 1500px;
 }
 
 .transform-rotate {
